@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Serve static files with explicit cache control for Vercel
-app.use(express.static(path.join(__dirname, 'public'), {
+app.use('/public', express.static(path.join(__dirname, 'public'), {
   maxAge: '1h',
   setHeaders: (res, path) => {
     if (path.endsWith('.css') || path.endsWith('.js')) {
@@ -19,6 +19,9 @@ app.use(express.static(path.join(__dirname, 'public'), {
     }
   }
 }));
+
+// Also serve static files at the root level for backward compatibility
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Route to serve the main page
 app.get('/', (req, res) => {

@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
         errorMessage.classList.add('hidden');
         
         try {
+            // Use relative URL for API requests (works in all environments)
             const response = await fetch('/fetch', {
                 method: 'POST',
                 headers: {
@@ -49,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
             pageTitleElement.textContent = data.title || 'No title';
             
             // Store the base URL for resolving relative links
-            const baseUrl = new URL(url).origin;
+            const pageBaseUrl = new URL(url).origin;
             
             // Create a sandboxed iframe to display the content
             const iframe = document.createElement('iframe');
@@ -87,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 // Handle different types of relative URLs
                                 if (linkUrl.startsWith('/')) {
                                     // Absolute path relative to domain
-                                    linkUrl = baseUrl + linkUrl;
+                                    linkUrl = pageBaseUrl + linkUrl;
                                 } else if (linkUrl.startsWith('#')) {
                                     // Fragment identifier - stay on same page
                                     return;

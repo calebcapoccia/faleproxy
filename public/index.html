@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Faleproxy - Replace Yale with Fale</title>
-    <!-- Use absolute path for stylesheet to ensure it loads in Vercel -->
-    <link rel="stylesheet" href="/styles.css">
+    <!-- Multiple stylesheet references for different environments -->
+    <link rel="stylesheet" href="/styles.css" onerror="this.onerror=null;this.href='/public/styles.css';">
     <!-- Inline critical CSS as a fallback -->
     <style>
         body {
@@ -82,7 +82,25 @@
         <p>Faleproxy - Created on March 26, 2025</p>
     </footer>
 
-    <!-- Use absolute path for script to ensure it loads in Vercel -->
-    <script src="/script.js"></script>
+    <!-- Multiple script references for different environments -->
+    <script>
+        // Dynamic script loading with fallback
+        function loadScript(src, fallbackSrc) {
+            const script = document.createElement('script');
+            script.src = src;
+            script.onerror = function() {
+                console.log('Failed to load script from ' + src + ', trying fallback...');
+                const fallbackScript = document.createElement('script');
+                fallbackScript.src = fallbackSrc;
+                document.body.appendChild(fallbackScript);
+            };
+            document.body.appendChild(script);
+        }
+        
+        // Try to load from root path first, then from /public
+        document.addEventListener('DOMContentLoaded', function() {
+            loadScript('/script.js', '/public/script.js');
+        });
+    </script>
 </body>
 </html>
