@@ -10,17 +10,7 @@ const PORT = 3001;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static files with explicit cache control for Vercel
-app.use('/public', express.static(path.join(__dirname, 'public'), {
-  maxAge: '1h',
-  setHeaders: (res, path) => {
-    if (path.endsWith('.css') || path.endsWith('.js')) {
-      res.setHeader('Cache-Control', 'public, max-age=3600');
-    }
-  }
-}));
-
-// Also serve static files at the root level for backward compatibility
+// Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Route to serve the main page
@@ -129,7 +119,5 @@ if (require.main === module && process.env.VERCEL !== '1') {
   });
 }
 
-// Export the Express app for serverless environments
-// Include the utility functions as properties on the app object
-app.ensureHttpProtocol = ensureHttpProtocol;
-module.exports = app;
+// Export for testing
+module.exports = { ensureHttpProtocol };
