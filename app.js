@@ -98,7 +98,8 @@ app.post('/fetch', async (req, res) => {
       success: true, 
       content: $.html(),
       title: title,
-      originalUrl: req.body.url
+      originalUrl: req.body.url,
+      processedUrl: url
     });
   } catch (error) {
     console.error('Error fetching URL:', error.message);

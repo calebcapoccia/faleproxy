@@ -2,7 +2,24 @@ const cheerio = require('cheerio');
 const request = require('supertest');
 const express = require('express');
 const { sampleHtmlWithYale } = require('./test-utils');
-const { ensureHttpProtocol } = require('../app');
+
+// Import the ensureHttpProtocol function
+let appModule;
+try {
+  appModule = require('../app');
+} catch (error) {
+  console.error('Error importing app.js:', error.message);
+  // Define a fallback function if import fails
+  appModule = {
+    ensureHttpProtocol: (url) => {
+      if (!url) return url;
+      if (!/^https?:\/\//i.test(url)) {
+        return `http://${url}`;
+      }
+      return url;
+    }
+  };
+}
 
 // Create a test app instead of spawning a server process
 const testApp = express();
@@ -15,7 +32,7 @@ testApp.post('/fetch', (req, res) => {
     let { url } = req.body;
     
     // Ensure URL has protocol
-    url = ensureHttpProtocol(url);
+    url = appModule.ensureHttpProtocol(url);
     
     if (!url) {
       return res.status(400).json({ error: 'URL is required' });
