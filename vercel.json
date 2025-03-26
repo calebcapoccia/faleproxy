@@ -8,8 +8,20 @@
   ],
   "routes": [
     {
-      "src": "/(.*)",
+      "src": "/fetch",
+      "methods": ["POST"],
+      "dest": "/app.js"
+    },
+    {
+      "src": "/.*",
+      "dest": "/app.js"
+    },
+    {
+      "src": "/",
       "dest": "/app.js"
     }
-  ]
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  }
 }

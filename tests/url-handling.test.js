@@ -1,6 +1,7 @@
-// Import only the function, not the entire app to avoid port conflicts
+// Import the app which has ensureHttpProtocol as a property
 const app = require('../app');
-const { ensureHttpProtocol } = app;
+// Access the ensureHttpProtocol function directly from the app object
+const ensureHttpProtocol = app.ensureHttpProtocol;
 
 describe('URL Protocol Handling', () => {
   test('should add http:// to URLs without protocol', () => {

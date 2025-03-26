@@ -3,13 +3,24 @@ const request = require('supertest');
 const express = require('express');
 const { sampleHtmlWithYale } = require('./test-utils');
 
-// Import the ensureHttpProtocol function
+// Import the app which has ensureHttpProtocol as a property
 let appModule;
 try {
   appModule = require('../app');
+  // If app is exported directly, ensureHttpProtocol should be a property
+  if (!appModule.ensureHttpProtocol) {
+    // Fallback if the structure changed
+    appModule.ensureHttpProtocol = (url) => {
+      if (!url) return url;
+      if (!/^https?:\/\//i.test(url)) {
+        return `http://${url}`;
+      }
+      return url;
+    };
+  }
 } catch (error) {
   console.error('Error importing app.js:', error.message);
-  // Define a fallback function if import fails
+  // Define a fallback module if import fails
   appModule = {
     ensureHttpProtocol: (url) => {
       if (!url) return url;

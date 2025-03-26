@@ -25,8 +25,8 @@ function ensureHttpProtocol(url) {
   return url;
 }
 
-// Export for testing
-module.exports = { ensureHttpProtocol };
+// Export the function for testing
+// We'll add this to the app export at the end of the file
 
 // API endpoint to fetch and modify content
 app.post('/fetch', async (req, res) => {
@@ -110,8 +110,14 @@ app.post('/fetch', async (req, res) => {
 });
 
 // Only start the server if this file is run directly (not imported for tests)
-if (require.main === module) {
+// and we're not in a serverless environment (like Vercel)
+if (require.main === module && process.env.VERCEL !== '1') {
   app.listen(PORT, () => {
     console.log(`Faleproxy server running at http://localhost:${PORT}`);
   });
 }
+
+// Export the Express app for serverless environments
+// Include the utility functions as properties on the app object
+app.ensureHttpProtocol = ensureHttpProtocol;
+module.exports = app;
