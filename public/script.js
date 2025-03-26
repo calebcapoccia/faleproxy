@@ -29,8 +29,13 @@ document.addEventListener('DOMContentLoaded', () => {
         errorMessage.classList.add('hidden');
         
         try {
-            // Use relative URL for API requests (works in all environments)
-            const response = await fetch('/fetch', {
+            // Determine if we're on Vercel or local development
+            const isVercel = window.location.hostname.includes('vercel.app');
+            
+            // Use the appropriate endpoint based on environment
+            const fetchEndpoint = '/fetch';
+            
+            const response = await fetch(fetchEndpoint, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

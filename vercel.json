@@ -4,6 +4,10 @@
     {
       "src": "app.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "api/**/*.js",
+      "use": "@vercel/node"
     }
   ],
   "routes": [
@@ -13,7 +17,11 @@
     },
     {
       "src": "/fetch",
-      "dest": "/app.js"
+      "dest": "/api/fetch.js"
+    },
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1.js"
     },
     {
       "src": "/(.*)",

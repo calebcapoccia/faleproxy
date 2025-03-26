@@ -49,6 +49,62 @@ The application includes a comprehensive test suite:
 - **Unit tests**: Test the Yale-to-Fale replacement logic
 - **API tests**: Test the application endpoints
 - **Integration tests**: Test the entire application workflow
+- **URL Handling tests**: Verify automatic addition of HTTP protocol to URLs
+- **Navigation tests**: Ensure proper handling of relative and absolute URLs when navigating
+- **URL API tests**: Validate API behavior with different URL formats
+
+## Deployment to Vercel
+
+This application is configured for seamless deployment to Vercel:
+
+1. **Push your code to GitHub**
+
+2. **Connect to Vercel**:
+   - Sign in to [Vercel](https://vercel.com)
+   - Click "New Project"
+   - Import your GitHub repository
+   - Select the repository and click "Import"
+
+3. **Configure the project**:
+   - The default settings should work automatically due to the `vercel.json` configuration
+   - No environment variables are required for basic functionality
+
+4. **Deploy**:
+   - Click "Deploy"
+   - Vercel will build and deploy your application
+
+5. **Access your deployed application**:
+   - Once deployment is complete, you can access your application at the provided Vercel URL
+
+### Vercel Configuration
+
+The application uses a specialized configuration for Vercel deployment:
+
+- **API Routes**: Serverless functions in the `/api` directory handle backend functionality
+- **Static Assets**: Served from the `/public` directory
+- **Routing**: Configured in `vercel.json` to handle all routes correctly
+
+### Troubleshooting Vercel Deployment
+
+If you encounter issues with your Vercel deployment:
+
+1. **Check the Build Logs** in the Vercel dashboard for any errors
+2. **Verify API Routes** are correctly configured in `vercel.json`
+3. **Ensure Static Assets** are being served correctly
+4. **Check Browser Console** for any JavaScript errors
+
+### Test Files
+
+The application includes the following test files:
+
+- **`tests/unit.test.js`**: Tests the core text replacement functionality
+- **`tests/api.test.js`**: Tests the main API endpoint functionality
+- **`tests/integration.test.js`**: Tests the complete application flow with mocked responses
+- **`tests/url-handling.test.js`**: Tests the automatic HTTP protocol addition to URLs
+- **`tests/navigation.test.js`**: Tests URL resolution for both relative and absolute paths
+- **`tests/url-api.test.js`**: Tests API handling of different URL formats and edge cases
+
+The tests use Jest as the testing framework and include mocks for external dependencies to avoid making actual HTTP requests during testing.
 
 ### Running Tests
 
