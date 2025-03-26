@@ -13,8 +13,9 @@ const testApp = express();
 testApp.use(express.json());
 testApp.use(express.urlencoded({ extended: true }));
 
-// Import the ensureHttpProtocol function without loading the entire app
-const { ensureHttpProtocol } = require('../app');
+// Import the app and access the ensureHttpProtocol function
+const app = require('../app');
+const ensureHttpProtocol = app.ensureHttpProtocol;
 
 // Mock the app's routes for testing
 testApp.post('/fetch', async (req, res) => {

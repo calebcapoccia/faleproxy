@@ -119,5 +119,6 @@ if (require.main === module && process.env.VERCEL !== '1') {
   });
 }
 
-// Export for testing
-module.exports = { ensureHttpProtocol };
+// Export both the app and the utility function
+app.ensureHttpProtocol = ensureHttpProtocol;
+module.exports = app;
