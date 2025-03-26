@@ -4,20 +4,28 @@
     {
       "src": "app.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "public/**",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
+    {
+      "src": "/styles.css",
+      "dest": "/public/styles.css"
+    },
+    {
+      "src": "/script.js",
+      "dest": "/public/script.js"
+    },
     {
       "src": "/fetch",
       "methods": ["POST"],
       "dest": "/app.js"
     },
     {
-      "src": "/.*",
-      "dest": "/app.js"
-    },
-    {
-      "src": "/",
+      "src": "/(.*)",
       "dest": "/app.js"
     }
   ],
