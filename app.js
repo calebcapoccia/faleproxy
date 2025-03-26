@@ -18,11 +18,15 @@ app.get('/', (req, res) => {
 
 // Function to ensure URL has http protocol
 function ensureHttpProtocol(url) {
+  if (!url) return url;
   if (!/^https?:\/\//i.test(url)) {
     return `http://${url}`;
   }
   return url;
 }
+
+// Export for testing
+module.exports = { ensureHttpProtocol };
 
 // API endpoint to fetch and modify content
 app.post('/fetch', async (req, res) => {
@@ -104,7 +108,9 @@ app.post('/fetch', async (req, res) => {
   }
 });
 
-// Start the server
-app.listen(PORT, () => {
-  console.log(`Faleproxy server running at http://localhost:${PORT}`);
-});
+// Only start the server if this file is run directly (not imported for tests)
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Faleproxy server running at http://localhost:${PORT}`);
+  });
+}
