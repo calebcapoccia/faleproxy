@@ -9,6 +9,8 @@ A Node.js web application that fetches a URL, replaces every instance of "Yale" 
 - Replaces all instances of "Yale" with "Fale" (case-insensitive)
 - Displays the modified content in an iframe
 - Shows original URL and page title in an info bar
+- Allows users to enter a link without the protocol (e.g., yale.edu)
+- Handles relative links and navigation within the application
 
 ## Installation
 
