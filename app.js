@@ -16,11 +16,23 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+// Function to ensure URL has http protocol
+function ensureHttpProtocol(url) {
+  if (!/^https?:\/\//i.test(url)) {
+    return `http://${url}`;
+  }
+  return url;
+}
+
 // API endpoint to fetch and modify content
 app.post('/fetch', async (req, res) => {
   try {
-    const { url } = req.body;
+    let { url } = req.body;
     
+    // First ensure URL has protocol
+    url = ensureHttpProtocol(url);
+    
+    // Then validate URL is not empty
     if (!url) {
       return res.status(400).json({ error: 'URL is required' });
     }
@@ -67,7 +79,7 @@ app.post('/fetch', async (req, res) => {
       success: true, 
       content: $.html(),
       title: title,
-      originalUrl: url
+      originalUrl: req.body.url
     });
   } catch (error) {
     console.error('Error fetching URL:', error.message);
