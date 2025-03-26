@@ -36,13 +36,28 @@ app.post('/fetch', async (req, res) => {
     if (!url) {
       return res.status(400).json({ error: 'URL is required' });
     }
+    
+    // Parse the URL to get components
+    const parsedUrl = new URL(url);
+    const baseUrl = parsedUrl.origin;
 
     // Fetch the content from the provided URL
-    const response = await axios.get(url);
+    const response = await axios.get(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.5'
+      }
+    });
     const html = response.data;
 
     // Use cheerio to parse HTML and selectively replace text content, not URLs
     const $ = cheerio.load(html);
+    
+    // Add base tag to handle relative URLs correctly
+    if (!$('head base').length) {
+      $('head').prepend(`<base href="${baseUrl}/" />`);
+    }
     
     // Function to replace text but skip URLs and attributes
     function replaceYaleWithFale(i, el) {
