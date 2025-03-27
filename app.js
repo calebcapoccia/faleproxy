@@ -105,5 +105,9 @@ if (require.main === module) {
   });
 }
 
-// Export for testing
-module.exports = { ensureHttpProtocol };
+// Export both the app and the utility function
+// This makes the app work with Vercel while maintaining test compatibility
+app.ensureHttpProtocol = ensureHttpProtocol;
+module.exports = app;
+// Also export the function directly for tests that import it that way
+module.exports.ensureHttpProtocol = ensureHttpProtocol;
