@@ -9,8 +9,6 @@ const PORT = 3001;
 // Middleware to parse request bodies
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Route to serve the main page
@@ -27,9 +25,6 @@ function ensureHttpProtocol(url) {
   return url;
 }
 
-// Export the function for testing
-// We'll add this to the app export at the end of the file
-
 // API endpoint to fetch and modify content
 app.post('/fetch', async (req, res) => {
   try {
@@ -38,7 +33,6 @@ app.post('/fetch', async (req, res) => {
     // First ensure URL has protocol
     url = ensureHttpProtocol(url);
     
-    // Then validate URL is not empty
     if (!url) {
       return res.status(400).json({ error: 'URL is required' });
     }
@@ -48,13 +42,7 @@ app.post('/fetch', async (req, res) => {
     const baseUrl = parsedUrl.origin;
 
     // Fetch the content from the provided URL
-    const response = await axios.get(url, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-        'Accept-Language': 'en-US,en;q=0.5'
-      }
-    });
+    const response = await axios.get(url);
     const html = response.data;
 
     // Use cheerio to parse HTML and selectively replace text content, not URLs
@@ -100,8 +88,7 @@ app.post('/fetch', async (req, res) => {
       success: true, 
       content: $.html(),
       title: title,
-      originalUrl: req.body.url,
-      processedUrl: url
+      originalUrl: url
     });
   } catch (error) {
     console.error('Error fetching URL:', error.message);
@@ -112,13 +99,11 @@ app.post('/fetch', async (req, res) => {
 });
 
 // Only start the server if this file is run directly (not imported for tests)
-// and we're not in a serverless environment (like Vercel)
-if (require.main === module && process.env.VERCEL !== '1') {
+if (require.main === module) {
   app.listen(PORT, () => {
     console.log(`Faleproxy server running at http://localhost:${PORT}`);
   });
 }
 
-// Export both the app and the utility function
-app.ensureHttpProtocol = ensureHttpProtocol;
-module.exports = app;
+// Export for testing
+module.exports = { ensureHttpProtocol };

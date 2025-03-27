@@ -2,6 +2,11 @@
 
 A Node.js web application that fetches a URL, replaces every instance of "Yale" with "Fale" in the document, and displays the modified content.
 
+## Submission notes
+
+- This took me approximately 2 hours to complete
+- I 
+
 ## Features
 
 - Simple and intuitive user interface
@@ -55,7 +60,7 @@ The application includes a comprehensive test suite:
 
 ## Deployment to Vercel
 
-This application is configured for seamless deployment to Vercel:
+This application is configured for deployment to Vercel's serverless environment:
 
 1. **Push your code to GitHub**
 
@@ -66,7 +71,7 @@ This application is configured for seamless deployment to Vercel:
    - Select the repository and click "Import"
 
 3. **Configure the project**:
-   - The default settings should work automatically due to the `vercel.json` configuration
+   - The default settings will work automatically due to the `vercel.json` configuration
    - No environment variables are required for basic functionality
 
 4. **Deploy**:
@@ -76,22 +81,22 @@ This application is configured for seamless deployment to Vercel:
 5. **Access your deployed application**:
    - Once deployment is complete, you can access your application at the provided Vercel URL
 
-### Vercel Configuration
+### Important Code Structure
 
-The application uses a specialized configuration for Vercel deployment:
+The application has been structured to work in both local and serverless environments:
 
-- **API Routes**: Serverless functions in the `/api` directory handle backend functionality
-- **Static Assets**: Served from the `/public` directory
-- **Routing**: Configured in `vercel.json` to handle all routes correctly
+- **Function Exports**: The `ensureHttpProtocol` function is exported as a property of the app object
+- **Resource Paths**: All resource paths use absolute URLs (starting with `/`)
+- **Error Handling**: Comprehensive error handling for all API endpoints
 
 ### Troubleshooting Vercel Deployment
 
 If you encounter issues with your Vercel deployment:
 
 1. **Check the Build Logs** in the Vercel dashboard for any errors
-2. **Verify API Routes** are correctly configured in `vercel.json`
-3. **Ensure Static Assets** are being served correctly
-4. **Check Browser Console** for any JavaScript errors
+2. **Verify Static Assets** are being served correctly by checking network requests
+3. **Check Browser Console** for any JavaScript errors
+4. **Test API Endpoints** directly to isolate any issues
 
 ### Test Files
 

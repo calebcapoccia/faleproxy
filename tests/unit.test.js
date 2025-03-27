@@ -80,7 +80,6 @@ describe('Yale to Fale replacement logic', () => {
     // Content should remain the same
     expect(modifiedHtml).toContain('<title>Test Page</title>');
     expect(modifiedHtml).toContain('<h1>Hello World</h1>');
-    // Since we're not replacing anything, the content should be unchanged
     expect(modifiedHtml).toContain('This is a test page with no Fale references');
   });
 
@@ -103,9 +102,6 @@ describe('Yale to Fale replacement logic', () => {
     
     const modifiedHtml = $.html();
     
-    // Check that all case variations of Yale are replaced with Fale
-    expect(modifiedHtml).toContain('Fale University');
-    expect(modifiedHtml).toContain('Fale College');
-    expect(modifiedHtml).toContain('Fale medical school');
+    expect(modifiedHtml).toContain('Fale University, Fale College, and Fale medical school');
   });
 });

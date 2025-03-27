@@ -3,34 +3,8 @@ const request = require('supertest');
 const express = require('express');
 const { sampleHtmlWithYale } = require('./test-utils');
 
-// Import the app which has ensureHttpProtocol as a property
-let appModule;
-try {
-  appModule = require('../app');
-  // If app is exported directly, ensureHttpProtocol should be a property
-  if (!appModule.ensureHttpProtocol) {
-    // Fallback if the structure changed
-    appModule.ensureHttpProtocol = (url) => {
-      if (!url) return url;
-      if (!/^https?:\/\//i.test(url)) {
-        return `http://${url}`;
-      }
-      return url;
-    };
-  }
-} catch (error) {
-  console.error('Error importing app.js:', error.message);
-  // Define a fallback module if import fails
-  appModule = {
-    ensureHttpProtocol: (url) => {
-      if (!url) return url;
-      if (!/^https?:\/\//i.test(url)) {
-        return `http://${url}`;
-      }
-      return url;
-    }
-  };
-}
+// Import the ensureHttpProtocol function
+const { ensureHttpProtocol } = require('../app');
 
 // Create a test app instead of spawning a server process
 const testApp = express();
@@ -43,7 +17,7 @@ testApp.post('/fetch', (req, res) => {
     let { url } = req.body;
     
     // Ensure URL has protocol
-    url = appModule.ensureHttpProtocol(url);
+    url = ensureHttpProtocol(url);
     
     if (!url) {
       return res.status(400).json({ error: 'URL is required' });
@@ -75,8 +49,7 @@ testApp.post('/fetch', (req, res) => {
       success: true, 
       content: $.html(),
       title: title,
-      originalUrl: req.body.url,
-      processedUrl: url
+      originalUrl: url
     });
   } catch (error) {
     console.error('Error in test fetch endpoint:', error.message);
@@ -85,7 +58,6 @@ testApp.post('/fetch', (req, res) => {
 });
 
 describe('Integration Tests', () => {
-
   test('Should replace Yale with Fale in fetched content', async () => {
     // Make a request to our test app
     const response = await request(testApp)
@@ -126,10 +98,8 @@ describe('Integration Tests', () => {
     
     expect(response.status).toBe(200);
     expect(response.body.success).toBe(true);
-    // The server adds http:// to the URL internally
-    expect(response.body.originalUrl).toBe('yale.edu');
-    // But the processed URL should have the protocol
-    expect(response.body.processedUrl).toBe('http://yale.edu');
+    // The URL should have http:// added to it
+    expect(response.body.originalUrl).toBe('http://yale.edu');
     
     // Content should still be processed correctly
     const content = response.body.content;
