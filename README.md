@@ -5,7 +5,6 @@ A Node.js web application that fetches a URL, replaces every instance of "Yale" 
 ## Submission notes
 
 - This took me approximately 2 hours to complete
-- I 
 
 ## Features
 
