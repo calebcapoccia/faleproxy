@@ -6,6 +6,7 @@ A Node.js web application that fetches a URL, replaces every instance of "Yale" 
 
 - For HW8, this took me approximately 2.5 hours to complete
 - The HW9 portion took me approximately 1.5 hours to complete
+- One bug is that on Vercel the CSS does not display properly like it does on the local version of this app.
 
 ## Features
 
